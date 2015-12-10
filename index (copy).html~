@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Pramod" >
+
+    <title>ChakraVUE.com</title>
+
+
+	
+    <!-- Bootstrap Core CSS -->
+    <link href="css_style/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css_style/stylish-portfolio.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="css_style/font-awesome.css" rel="stylesheet" type="text/css">
+    <link href="css_style/css.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
+    <nav id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
+            <li class="sidebar-brand">
+                <a href="#top" onclick='$("#menu-close").click();'>Navigate</a>
+            </li>
+            <li>
+                <a href="#top" onclick='$("#menu-close").click();'>Home</a>
+            </li>
+            <li>
+                <a href="#about" onclick='$("#menu-close").click();'>Vision</a>
+            </li>
+            <li>
+                <a href="#services" onclick='$("#menu-close").click();'>Services</a>
+            </li>
+            <li>
+                <a href="#contact" onclick='$("#menu-close").click();'>Contact</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Header -->
+    <header id="top" class="header">
+		<div id="container"></div>
+ 
+<div style="width:100%;height:50%;top:50%;position:absolute;vertical-align:middle;text-align:center;frame-width=5px;">
+			<h1 style="color:E5E4E2" >ChakraVUE</h1>
+			<h2 style="color:E5E4E2">Virtual Reality and 360 Degree Video Tours</h2>
+</div>
+<!--		
+      <div style="width:100%;height:50%;top:50%;position:absolute;vertical-align:middle;text-align:center;">
+			<a href="#" class="ghost-button">Ghost Button</a>
+  
+  <button type="button" class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-ok"></i></button>
+   <button type="button" class="btn btn-default btn-circle btn-xl">A</button>
+	</div>
+-->
+		<script src="build/three.min.js"></script>
+
+		<script src="examples/js/controls/DeviceOrientationControls.js"></script>
+		<script>
+
+		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) )
+		{	
+			alert("I am a mobile alert box!");
+			(function() {
+				  "use strict";
+
+				  window.addEventListener('load', function() {
+
+						var container, camera, scene, renderer, controls, geometry, mesh;
+
+						var animate = function(){
+
+							window.requestAnimationFrame( animate );
+
+							controls.update();
+							renderer.render(scene, camera);
+
+						};
+
+						container = document.getElementById( 'container' );
+
+						camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1100);
+
+						controls = new THREE.DeviceOrientationControls( camera );
+
+						scene = new THREE.Scene();
+
+						var geometry = new THREE.SphereGeometry( 500, 16, 8 );
+						geometry.scale( - 1, 1, 1 );
+
+						var material = new THREE.MeshBasicMaterial( {
+							map: THREE.ImageUtils.loadTexture( 'images/monks.png' )
+						} );
+
+						var mesh = new THREE.Mesh( geometry, material );
+						scene.add( mesh );
+
+						
+
+						renderer = new THREE.WebGLRenderer();
+						renderer.setPixelRatio( window.devicePixelRatio );
+						renderer.setSize(window.innerWidth, window.innerHeight);
+						renderer.domElement.style.position = 'absolute';
+						renderer.domElement.style.top = 0;
+						container.appendChild(renderer.domElement);
+
+						window.addEventListener('resize', function() {
+
+							camera.aspect = window.innerWidth / window.innerHeight;
+							camera.updateProjectionMatrix();
+							renderer.setSize( window.innerWidth, window.innerHeight );
+
+						}, false);
+
+						animate();
+
+				  }, false);
+
+			})();
+		}
+
+		else
+		{
+
+			alert("I am a desktop alert box!");
+			var camera, scene, renderer;
+
+			var isUserInteracting = false,
+			onMouseDownMouseX = 0, onMouseDownMouseY = 0,
+			lon = 0, onMouseDownLon = 0,
+			lat = 0, onMouseDownLat = 0,
+			phi = 0, theta = 0;
+			
+			var touchX, touchY;
+			init();
+			animate();
+
+			function init() {
+
+				var container, mesh;
+
+				container = document.getElementById( 'container' );
+
+				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1100 );
+				camera.target = new THREE.Vector3( 0, 0, 0 );
+
+				scene = new THREE.Scene();
+
+				var geometry = new THREE.SphereGeometry( 500, 60, 40 );
+				geometry.applyMatrix( new THREE.Matrix4().makeScale( -1, 1, 1 ) );
+
+				var material = new THREE.MeshBasicMaterial( {
+					map: THREE.ImageUtils.loadTexture( 'images/monks.png' )
+				} );
+
+				mesh = new THREE.Mesh( geometry, material );
+				
+				scene.add( mesh );
+
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+
+				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				document.addEventListener( 'mouseup', onDocumentMouseUp, false );
+				document.addEventListener( 'mousewheel', onDocumentMouseWheel, false );
+				document.addEventListener( 'DOMMouseScroll', onDocumentMouseWheel, false);
+				document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+				document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+				document.addEventListener( 'touchend', onDocumentTouchEnd, false );
+				
+
+				//
+
+				document.addEventListener( 'dragover', function ( event ) {
+
+					event.preventDefault();
+					event.dataTransfer.dropEffect = 'copy';
+
+				}, false );
+
+				document.addEventListener( 'dragenter', function ( event ) {
+
+					document.body.style.opacity = 0.5;
+
+				}, false );
+
+				document.addEventListener( 'dragleave', function ( event ) {
+
+					document.body.style.opacity = 1;
+
+				}, false );
+
+				document.addEventListener( 'drop', function ( event ) {
+
+					event.preventDefault();
+
+					var reader = new FileReader();
+					reader.addEventListener( 'load', function ( event ) {
+
+						material.map.image.src = event.target.result;
+						material.map.needsUpdate = true;
+
+					}, false );
+					reader.readAsDataURL( event.dataTransfer.files[ 0 ] );
+
+					document.body.style.opacity = 1;
+
+				}, false );
+
+				//
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function onDocumentMouseDown( event ) {
+
+				event.preventDefault();
+
+				isUserInteracting = true;
+
+				onPointerDownPointerX = event.clientX;
+				onPointerDownPointerY = event.clientY;
+
+				onPointerDownLon = lon;
+				onPointerDownLat = lat;
+
+			}
+			function onDocumentTouchStart( event ) {
+				event.preventDefault();
+				isUserInteracting = true;
+				var touch = event.touches[ 0 ];
+				touchX = touch.pageX;
+				touchY = touch.pageY;
+				
+				onTouchDownLon = lon;
+				onTouchDownLat = lat;
+			}
+			function onDocumentMouseMove( event ) {
+
+				if ( isUserInteracting === true ) {
+
+					lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
+					lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
+
+				}
+
+			}
+			
+			function onDocumentTouchMove( event ) {
+				//event.preventDefault();
+					var touch = event.touches[ 0 ];
+					if ( isUserInteracting === true ) {
+					lon = ( touchX - touch.pageX ) * 0.1 + onTouchDownLon;
+					lat = ( touch.pageY - touchY ) * 0.1 + onTouchDownLat;
+					
+
+				}
+				/*
+				lon -= ( touch.screenX - touchX ) * 0.1;
+				lat += ( touch.screenY - touchY ) * 0.1;
+				touchX = touch.screenX;
+				touchY = touch.screenY;
+				*/
+			}
+
+			function onDocumentMouseUp( event ) {
+
+				isUserInteracting = false;
+
+			}
+			
+			function onDocumentTouchEnd( event ) {
+
+				isUserInteracting = false;
+
+			}
+			/*
+			function onDocumentTouchDown( event ) {
+				event.preventDefault();
+
+				isUserInteracting = true;
+
+				onTouchDownPointerX = event.touchX;
+				onTouchDownPointerY = event.touch.;
+
+				onPointerDownLon = lon;
+				onPointerDownLat = lat;
+			}*/
+			
+			
+			
+			
+
+			function onDocumentMouseWheel( event ) {
+
+				// WebKit
+
+				if ( event.wheelDeltaY ) {
+
+					camera.fov -= event.wheelDeltaY * 0.05;
+
+				// Opera / Explorer 9
+
+				} else if ( event.wheelDelta ) {
+
+					camera.fov -= event.wheelDelta * 0.05;
+
+				// Firefox
+
+				} else if ( event.detail ) {
+
+					camera.fov += event.detail * 1.0;
+
+				}
+
+				camera.updateProjectionMatrix();
+
+			}
+			
+			
+			function animate() {
+
+				requestAnimationFrame( animate );
+				update();
+
+			}
+
+			function update() {
+
+				if ( isUserInteracting === false ) {
+
+					lon += 0.1;
+
+				}
+
+				lat = Math.max( - 85, Math.min( 85, lat ) );
+				phi = THREE.Math.degToRad( 90 - lat );
+				theta = THREE.Math.degToRad( lon );
+
+				camera.target.x = 500 * Math.sin( phi ) * Math.cos( theta );
+				camera.target.y = 500 * Math.cos( phi );
+				camera.target.z = 500 * Math.sin( phi ) * Math.sin( theta );
+
+				camera.lookAt( camera.target );
+
+				/*
+				// distortion
+				camera.position.copy( camera.target ).negate();
+				*/
+
+				renderer.render( scene, camera );
+
+			}
+
+		}
+		</script>
+
+    </header>
+
+    <!-- About -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Vision</h2>
+                    <p class="lead">Being the First Virtual Reality media company in India, our vision is to promote tourist locations both nationally and internationally.<br>Providing immersive real time lectures on Geography and History for Primary and Secondary school students.<br>Preserve the beauty, culture and heritage of our state in 360x360 degrees digitally online forever.<br>Provide a new marketing platform for both Government and private organizations.</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+
+    <!-- Services -->
+    <!-- The circle icons use Font Awesome's stacked icon classes. For more information, visit http://fontawesome.io/examples/ -->
+    <section id="services" class="services bg-primary">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <h2>Our Services</h2>
+                    <hr class="small">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-video-camera fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>360 Degree Videos</strong>
+                                </h4>
+                                <p>We shoot 360 degree video footage of your choice</p>
+                                <a href="#" class="btn btn-light">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-tv fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Advertisements</strong>
+                                </h4>
+                                <p>Creating immersive virtual reality advertisements</p>
+                                <a href="#" class="btn btn-light">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-compass fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Virtual Tours</strong>
+                                </h4>
+                                <p>Guided virtual tours of events, places and heritage sites</p>
+                                <a href="#" class="btn btn-light">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-pencil fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Training</strong>
+                                </h4>
+                                <p>We train VR enthusiasts covering topics from shooting to production</p>
+                                <a href="#" class="btn btn-light">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+
+    <!-- Map -->
+    <section id="contact" class="map">
+        <iframe scrolling="no" marginheight="0" marginwidth="0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15225.24660068962!2d78.3483098!3d17.444791499999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb93a2eb620af7%3A0x943fcc66d90e2d8e!2sIIIT%2C+Gachibowli%2C+Hyderabad%2C+Telangana+500032!5e0!3m2!1sen!2sin!4v1442829103832" frameborder="0" height="100%" width="100%"></iframe>
+        <br>
+        
+        
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 text-center">
+                    <h4><strong>ChakraVUE Media</strong>
+                    </h4>
+		<p>1st Floor, Phase 2</p>
+                    <p>KrishnaNagar, Hyderabad - 500073</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fa fa-phone fa-fw"></i> (+91)-40-23546361</li>
+                        <li><i class="fa fa-envelope-o fa-fw"></i>  <a href="mailto:name@example.com">chakravuemedia@gmail.com</a>
+                        </li>
+                    </ul>
+                    <br>
+                    <ul class="list-inline">
+                        <li>
+                            <a href="#"><i class="fa fa-facebook fa-fw fa-3x"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-twitter fa-fw fa-3x"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-dribbble fa-fw fa-3x"></i></a>
+                        </li>
+                    </ul>
+                    <hr class="small">
+                    <p class="text-muted">Copyright © ChakraVUE 2015</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="css_style/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="css_style/bootstrap.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script>
+    // Closes the sidebar menu
+    $("#menu-close").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+
+    // Opens the sidebar menu
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+
+    // Scrolls to the selected menu item on the page
+    $(function() {
+        $('a[href*=#]:not([href=#])').click(function() {
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top
+                    }, 1000);
+                    return false;
+                }
+            }
+        });
+    });
+    </script>
+
+</body></html>
