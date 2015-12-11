@@ -36,7 +36,7 @@
 }
 @font-face {
   font-family: 'OCRAStd';
-  font-style: normal;
+  font-style: italic;
   /*font-weight: 300;*/
-  src: local('OCRAStdRegular'), url('OCRAStdRegular') format('ttf');
+  src: local('OCRAStdRegular'), url('OCRAStdRegular.ttf') format('ttf');
 }

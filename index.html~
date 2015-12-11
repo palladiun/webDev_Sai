@@ -68,8 +68,8 @@
     <header id="top" class="header">
 		<div id="container"></div>
 
-<div style="font-family:OCRAStd;width:100%;height:50%;top:50%;position:absolute;vertical-align:middle;text-align:center;frame-width=5px;">
-    <h1 style="color:#0099CC"><big><big>CHAKRVUE</big></big></h1>
+<div id="heading" style="font-family:OCRAStd;width:100%;height:50%;top:50%;position:absolute;vertical-align:middle;text-align:center;frame-width=5px;">
+    <h1 style="color:#0099CC"><big><big>CHAKRAVUE</big></big></h1>
 			<h3 style="color:#E5E4E2">A Virtual Reality Media Production Company</h3>
 
         </div>
@@ -715,6 +715,13 @@
     <script src="css_style/bootstrap.js"></script>
     
     <style>
+    @font-face {
+    font-family: OCRAStd;
+    src: url(/css_style/OCRAStdRegular.ttf);
+    }
+    #heading {
+	 font-family: OCRAStd;
+    }
     /*
     #sai , #mc {
      border: 1px solid #cc3;
